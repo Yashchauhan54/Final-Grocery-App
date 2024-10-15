@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/style.css}" />
+</head>
+<body>
+<div th:replace="navbar"></div>
+
+<div class="container">
+    <h2 style="color: #134F44;" class="text-center">Groceries delivered to your door via Instacart</h2>
+
+    <div class="row col-md-12">
+        <div class="right-area col-md-6 text-center">
+            <h2 style="color: #134F44;">Event at Whole Foods Market</h2>
+            <p style="color: #134F44;">There are lots of events going on at our stores. This Diwali we are providing exclusive discounts on different products. All the groceries items in discounted price are listed in our flyer. Please visit your nearby Whole foods market to get your desired items in low price.</p>
+            <a href="#"><button class="theme-button btn1 btn-primary">Shop Now</button></a>
+            <a href="#"><button class="theme-button btn1 btn-primary">See all Events</button></a>
+        </div>
+        <div class="left-area col-md-6">
+            <img class="left-image img-fluid" th:src="@{/food.jpg}" />
+        </div>
+    </div>
+
+    <h1 style="color: #134F44;" class="text-center">Unlimited Groceries delivery $9.99 per Month</h1>
+
+    <div class="row col-md-12">
+        <img class="center-image food-image" th:src="@{/img.png}" />
+    </div>
+
+    <div class="container mt-5">
+        <h1 class="text-center mt-5">Buy Your Desired Product at a low price</h1>
+        <div class="container">
+            <div class="row">
+                <div class="card col-md-3 mb-3" th:each="product : ${products}">
+                    <img class="card-img-top" th:src="@{'/images/' + ${product.image}}" alt="Product Image">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${product.productName}"></h5>
+                        <p class="card-text" th:text="${product.price} + ' CAD'"></p>
+                        <form th:action="@{/add}" method="post">
+                            <input type="hidden" name="item" th:value="${product.productName}">
+                            <input type="hidden" name="image" th:value="${product.image}">
+                            <input type="hidden" name="price" th:value="${product.price}">
+                            <button class="common-theme-button btn1 btn-primary" type="submit">Add to Cart</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="footer"></div>
+
+<script src="js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,170 @@
+
+ /* Custom CSS */
+body {
+    font-family: 'Arial', sans-serif;
+}
+
+.navbar {
+    background-color: #f8f9fa !important;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    color: #333;
+}
+
+.navbar-nav .nav-link {
+    color: #555;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #007bff;
+}
+
+footer {
+    background:#134F44;
+    padding: 40px 0;
+    color: white;
+}
+
+footer .text-uppercase {
+    font-weight: bold;
+}
+
+footer .text-dark:hover {
+    color: #007bff !important;
+    text-decoration: none;
+}
+
+footer .bg-dark {
+    background-color: #343a40 !important;
+}
+
+footer .text-white {
+    color: #fff !important;
+}
+
+
+/* Logo Area */
+.logo{
+
+}
+
+.footer-area{
+background:black;
+}
+
+.footer-area h5{
+color:white!important;
+}
+.footer-area p{
+color:white!important;
+}
+
+.footer-area a{
+color:white!important;
+}
+
+
+.theme-button{
+margin-top:20px;
+border:0px;
+border-radius:0px;
+padding:10px 50px;
+}
+
+.row .right-area .p{
+margin-top:20px;}
+
+.theme-button:hover{
+background-color:blue;
+padding:10px 50px;
+}
+
+
+.common-theme-button{
+background-color:red;
+border:0px;
+border-radius:0px;
+}
+
+.common-theme-button:hover{
+background-color:blue;
+}
+
+.hero-left-text{
+margin-top:100px;
+}
+
+
+.card-img-top{
+height:250px;
+padding:20px;
+}
+.card{
+margin-top:20px;
+margin-bottom:20px;
+}
+
+.cart-imge{
+width:100px;
+height:100px;
+}
+
+/* Custom styles for the main navbar */
+.navbar {
+    background-color: #134F44!important;
+     color:white!important;/* Set background color to green */
+}
+
+.navbar .navbar-brand,
+.navbar .nav-link,
+.navbar .form-control,
+.navbar .btn {
+    color: white !important; /* Set text color to white */
+}
+
+.navbar-light.bg-light.mt-3 .nav-link {
+    color: white !important;
+}
+.btn1{
+background-color:#134F44!important;
+color:white!important;
+}
+
+.btn1:hover{
+background-color:green!important;
+color:white!important;
+}
+
+.food-image {
+            height: 450px;
+        }
+.center-image {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top:20px;
+        }
+
+
+
+.text-center{
+margin-top:20px;
+margin-bottom:20px}
+
+h2 {
+margin-top:30px;
+    margin-bottom: 20px;
+}
+
+h1 {
+margin-top:20px;
+    margin-bottom: 20px;
+}
+.text-center1{
+text-align:center;
+margin-top:30px!important;
+margin-bottom:30px!important;}
+
+

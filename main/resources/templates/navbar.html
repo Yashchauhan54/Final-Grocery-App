@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{css/bootstrap.min.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/style.css}">
+    <title>Navbar</title>
+</head>
+<body>
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="/"><img class="logo" th:src="@{/logo.jpg}" alt="Logo"></a>
+        <form class="d-flex ms-3">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <!-- If user is not logged in -->
+                <li class="nav-item" th:if="${user == null}">
+                    <a class="nav-link active" aria-current="page" href="/login">Login</a>
+                </li>
+                <li class="nav-item" th:if="${user == null}">
+                    <a class="nav-link active" aria-current="page" href="/signup">Signup</a>
+                </li>
+
+                <!-- If user is logged in -->
+                <li class="nav-item" th:if="${user != null}">
+                    <a class="nav-link active" aria-current="page" href="#">Hello, <span th:text="${user.name}">User</span></a>
+                </li>
+                <li class="nav-item" th:if="${user != null}">
+                    <a class="nav-link active" aria-current="page" href="/logout">Logout</a>
+                </li>
+
+                <!-- Show links for 'admin' -->
+                <li class="nav-item" th:if="${user != null and user.type == 'admin'}">
+                    <a class="nav-link active" aria-current="page" href="/admin/words">Admin</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/cart"><span class="badge text-bg-danger" th:text="${cartQty}">0</span> Cart</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Additional Links -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light mt-3">
+    <div class="container">
+        <div class="collapse navbar-collapse" id="navbarLinks">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link mx-2" href="#">In-Store</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link mx-2" href="#">Weekly Sales</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link mx-2" href="#">Pickup & Delivery</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link mx-2" href="#">Products</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link mx-2" href="#">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link mx-2" href="#">Catering</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link mx-2" href="#">Support</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<script src="@{js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>
