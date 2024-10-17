@@ -12,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("admin/")
@@ -147,5 +148,44 @@ public class AdminController {
         } else {
             return "redirect:/";
         }
+    }
+
+
+    @Autowired
+    private OrderRepository orderRepository;
+
+    // Method to display all orders (as before)
+    @GetMapping("/orders")
+    public String viewOrders(Model model) {
+        List<Order> orders = orderRepository.findAllByOrderByOrderDateDesc();
+        model.addAttribute("orders", orders);
+        return "admin-order-history"; // Thymeleaf template for displaying all orders
+    }
+
+
+    @Autowired
+    private OrderHistoryRepository orderHistoryRepository;
+
+    @GetMapping("/order-details/{orderId}")
+    public String orderDetails(@PathVariable Long orderId, Model model) {
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new IllegalArgumentException("Invalid order Id:" + orderId));
+        List<OrderHistory> orderHistoryList = orderHistoryRepository.findByOrder(order);
+
+        model.addAttribute("orderHistoryList", orderHistoryList);
+        model.addAttribute("order", order);
+        return "order-details";
+    }
+
+
+    @PostMapping("/order/update")
+    public String updateOrderStatus(@RequestParam("orderId") Long orderId,
+                                    @RequestParam("status") String status) {
+        Optional<Order> optionalOrder = orderRepository.findById(orderId);
+        if (optionalOrder.isPresent()) {
+            Order order = optionalOrder.get();
+            order.setStatus(status);
+            orderRepository.save(order);
+        }
+        return "redirect:/admin/orders"; // Redirect to the orders page after updating
     }
 }

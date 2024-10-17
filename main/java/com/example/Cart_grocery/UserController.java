@@ -74,20 +74,6 @@ public class UserController {
 
 
 
-    @PostMapping("/checkout")
-    public String checkout(HttpSession session, Model model) {
-        User user = (User) session.getAttribute("user");
-
-            return "success"; // Redirect to a success page
-    }
-
-    @PostMapping("/success")
-    public String success(HttpSession session, Model model) {
-        User user = (User) session.getAttribute("user");
-
-        return "success"; // Redirect to a success page
-    }
-
 
 
 }

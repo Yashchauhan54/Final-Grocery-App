@@ -35,7 +35,10 @@
 
                 <!-- Show links for 'admin' -->
                 <li class="nav-item" th:if="${user != null and user.type == 'admin'}">
-                    <a class="nav-link active" aria-current="page" href="/admin/words">Admin</a>
+                    <a class="nav-link active" aria-current="page" >Admin</a>
+                </li>
+                <li class="nav-item" th:if="${user != null and user.type == 'admin'}">
+                    <a class="nav-link active" aria-current="page" href="orders" >Change Order Status</a>
                 </li>
 
                 <li class="nav-item">
@@ -64,7 +67,7 @@
                     <a class="nav-link mx-2" href="#">Products</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link mx-2" href="#">Services</a>
+                    <a class="nav-link mx-2"  href="my-orders">Orders</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link mx-2" href="#">Catering</a>

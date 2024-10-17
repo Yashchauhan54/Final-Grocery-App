@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -15,7 +16,16 @@ import java.util.List;
 public class HomeController {
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private OrderRepository orderRepository;
+
+    @Autowired
+    private OrderHistoryRepository orderHistoryRepository;
 
     @Autowired
     private ProductService productService;
@@ -82,7 +92,6 @@ public class HomeController {
     public String cart(HttpSession session, Model model) {
         User user = (User) session.getAttribute("user");
 
-
         List<Item> cartItems = (List<Item>) session.getAttribute("cartItems");
         if (cartItems == null) {
             cartItems = new ArrayList<>();
@@ -90,13 +99,11 @@ public class HomeController {
         model.addAttribute("cartItems", cartItems);
         model.addAttribute("cartQty", cartItems.size());
 
-
         double totalAmount = calculateTotal(cartItems);
         DecimalFormat df = new DecimalFormat("#0.00");
         String formattedTotal = df.format(totalAmount);
 
-        model.addAttribute("total",formattedTotal);
-
+        model.addAttribute("total", formattedTotal);
 
         return "cart";
     }
@@ -179,5 +186,77 @@ public class HomeController {
         session.invalidate();
         return "redirect:/";
     }
-}
 
+    @GetMapping("/order")
+    public String order(HttpSession session, Model model) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
+
+        // Retrieve cart items from session
+        List<Item> cartItems = (List<Item>) session.getAttribute("cartItems");
+        if (cartItems == null || cartItems.isEmpty()) {
+            return "redirect:/cart"; // If no items in cart, redirect to cart
+        }
+
+        // Calculate total amount
+        double totalAmount = calculateTotal(cartItems);
+
+        // Create new order
+        Order order = new Order();
+        order.setUser(user);
+        order.setTotalAmount(totalAmount);
+        order.setOrderDate(new Date());
+        order.setOrderHistoryList(new ArrayList<>());
+
+        // Save order to DB first (so we get an order ID)
+        Order savedOrder = orderRepository.save(order);
+
+        // Create order history for each cart item
+        for (Item item : cartItems) {
+            OrderHistory orderHistory = new OrderHistory();
+            orderHistory.setOrder(savedOrder);
+            orderHistory.setProductName(item.getName());
+            orderHistory.setProductImage(item.getImage());
+            orderHistory.setProductPrice(item.getPrice());
+            orderHistory.setQuantity(item.getQuantity());
+
+            // Save each order history to DB
+            orderHistoryRepository.save(orderHistory);
+        }
+
+        // Clear the cart
+        session.removeAttribute("cartItems");
+
+        // Redirect to success page
+        return "redirect:/success";
+    }
+
+    @GetMapping("/success")
+    public String success(HttpSession session, Model model) {
+        return "success";
+    }
+
+    @GetMapping("/my-orders")
+    public String viewOrders(HttpSession session, Model model) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
+
+        List<Order> orders = orderRepository.findByUserOrderByOrderDateDesc(user);
+        model.addAttribute("orders", orders);
+        return "order-history"; // Create a view for displaying orders
+    }
+
+    @GetMapping("/order-details/{orderId}")
+    public String orderDetails(@PathVariable Long orderId, Model model) {
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new IllegalArgumentException("Invalid order Id:" + orderId));
+        List<OrderHistory> orderHistoryList = orderHistoryRepository.findByOrder(order);
+
+        model.addAttribute("orderHistoryList", orderHistoryList);
+        model.addAttribute("order", order);
+        return "order-details";
+    }
+}
